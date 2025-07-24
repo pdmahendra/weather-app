@@ -1,69 +1,62 @@
-# React + TypeScript + Vite
+# Weather-app (WeatherNow - PWA)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A Progressive Web App (PWA) that provides real-time weather updates, hourly forecasts, and 3-day predictions. Users can search cities worldwide, save favorite locations, and view weather data even when offline.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- **Real-Time Weather Data:** Current temperature, humidity, wind speed, and conditions.
+- **3-Day Forecast:** Daily high/low temperatures with weather icons.
+- **Hourly Forecast:** Visual breakdown of weather changes throughout the day.
+- **Location Management:**
+  - Search and save multiple cities.
+  - Set and use current location via device GPS.
+  - Favorite cities for quick access.
+- **Offline Mode:** Previously fetched weather data is cached and displayed when offline.
+- **Cross-Platform PWA:** Installable on desktop and mobile devices.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Tech Stack
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+- **Framework:** React 19 (Vite + TypeScript)
+- **State Management:** Zustand
+- **Data Fetching:** React Query + Axios
+- **Styling:** TailwindCSS + Lucide Icons
+- **PWA:** `vite-plugin-pwa`
+- **API Provider:** WeatherAPI.com
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## How to Run the Project
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+1. Clone the Repository
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+```bash
+git clone <REPO_URL>
+cd weather-app
+
+
+2. Install Dependencies
+npm install
+
+3. Environment Variables
+VITE_WEATHER_API_KEY=your_api_key_here
+
+4. Run in Development
+npm run dev
+
+5. Build for Production
+npm run build
+npm run preview
+
+Assumptions & Trade-offs
+Using free tier Weather API (limited requests e.g 3 days forecast only).
+Offline mode uses last fetched data (not background sync).
+Location search limited to WeatherAPI city database.
+Location services are permission-based — fallback to default location (Malta) if denied.
+
+Improvements (If Given More Time)
+Add weather maps (radar, precipitation) for visual context.
+Implement background sync to refresh weather automatically when online.
