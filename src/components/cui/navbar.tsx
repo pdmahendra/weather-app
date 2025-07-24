@@ -74,7 +74,7 @@ const Navbar = () => {
 
   const handleFavoriteClick = (fav: any) => {
     setWeatherData(fav.weatherData);
-    setShowFavorites(false)
+    setShowFavorites(false);
   };
 
   const handleCurrentLocationClick = () => {
@@ -92,8 +92,8 @@ const Navbar = () => {
     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
       <div className="text-2xl font-bold">Weather</div>
 
-      <div className="flex gap-4 relative">
-        <div className="relative w-64">
+      <div className="flex flex-col md:flex-row md:gap-4 gap-2 relative w-full md:w-auto">
+        <div className="relative w-full md:w-64">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
           <Input
             type="text"
@@ -120,65 +120,69 @@ const Navbar = () => {
           )}
         </div>
 
-        <Button
-          variant="outline"
-          className="flex items-center gap-2"
-          onClick={toggleFavorite}
-          disabled={!location}
-        >
-          <Heart
-            className={`w-4 h-4 ${
-              isFavorite ? "fill-red-500 text-red-500" : "text-muted-foreground"
-            }`}
-          />
-        </Button>
+        <div className="flex flex-wrap gap-2 md:flex-nowrap md:gap-4">
+          <Button
+            variant="outline"
+            className="flex items-center gap-2"
+            onClick={toggleFavorite}
+            disabled={!location}
+          >
+            <Heart
+              className={`w-4 h-4 ${
+                isFavorite
+                  ? "fill-red-500 text-red-500"
+                  : "text-muted-foreground"
+              }`}
+            />
+          </Button>
 
-        <Button
-          variant="outline"
-          className="flex items-center gap-2"
-          onClick={() => setShowFavorites((prev) => !prev)}
-        >
-          <Star className="w-4 h-4" />
-          Favorites
-        </Button>
+          <Button
+            variant="outline"
+            className="flex items-center gap-2"
+            onClick={() => setShowFavorites((prev) => !prev)}
+          >
+            <Star className="w-4 h-4" />
+            Favorites
+          </Button>
 
-        {showFavorites && (
-          <Card className="absolute right-0 top-full mt-1 w-[300px] shadow-md border rounded-lg bg-white dark:bg-gray-900 max-h-60 overflow-y-auto z-50">
-            <ul className="divide-y">
-              {favorites.length > 0 ? (
-                favorites.map((fav) => (
-                  <li
-                    key={fav.id}
-                    className="px-3 py-2 flex justify-between items-center text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
-                  >
-                    <span
-                      className="cursor-pointer"
-                      onClick={() => handleFavoriteClick(fav)}
+          {showFavorites && (
+            <Card className="absolute right-0 top-full mt-1 w-[300px] shadow-md border rounded-lg bg-white dark:bg-gray-900 max-h-60 overflow-y-auto z-50">
+              <ul className="divide-y">
+                {favorites.length > 0 ? (
+                  favorites.map((fav) => (
+                    <li
+                      key={fav.id}
+                      className="px-3 py-2 flex justify-between items-center text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
                     >
-                      {fav.weatherData.location.name},{" "}
-                      {fav.weatherData.location.country}
-                    </span>
-                    <button
-                      className="text-gray-500 hover:text-red-500"
-                      onClick={() => removeFavorite(fav.id)}
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
+                      <span
+                        className="cursor-pointer"
+                        onClick={() => handleFavoriteClick(fav)}
+                      >
+                        {fav.weatherData.location.name},{" "}
+                        {fav.weatherData.location.country}
+                      </span>
+                      <button
+                        className="text-gray-500 hover:text-red-500"
+                        onClick={() => removeFavorite(fav.id)}
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </li>
+                  ))
+                ) : (
+                  <li className="px-3 py-2 text-sm text-gray-500">
+                    No favorites yet
                   </li>
-                ))
-              ) : (
-                <li className="px-3 py-2 text-sm text-gray-500">
-                  No favorites yet
-                </li>
-              )}
-            </ul>
-          </Card>
-        )}
+                )}
+              </ul>
+            </Card>
+          )}
 
-        <Button variant={"destructive"} onClick={handleCurrentLocationClick}>
-          <LocateFixed className="mr-2" />
-          Current Location
-        </Button>
+          <Button variant={"destructive"} onClick={handleCurrentLocationClick}>
+            <LocateFixed className="mr-2" />
+            Current Location
+          </Button>
+        </div>
       </div>
     </div>
   );
