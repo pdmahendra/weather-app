@@ -13,7 +13,7 @@ interface DayForecastProps {
 
 const DayForecast = ({ forecast }: DayForecastProps) => {
   return (
-    <div className="flex items-center justify-start gap-4">
+    <div className="flex flex-wrap items-center justify-start gap-4">
       {forecast.map((day, index) => (
         <div
           key={index}
