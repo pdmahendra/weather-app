@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 export type City = {
   id: string;
@@ -24,52 +25,42 @@ type WeatherState = {
   setWeatherData: (data: any) => void;
 
   setCurrentLocationWeather: (data: any) => void;
-  loadCurrentLocationWeather: () => void;
 
-  addFavorite: (city: FavoriteCity) => void;
+  addFavorite: (city: City, weatherData: any) => void;
   removeFavorite: (cityId: string) => void;
-  loadFavoritesFromStorage: () => void;
 };
 
-export const useWeatherStore = create<WeatherState>((set, get) => ({
-  location: null,
-  weatherData: null,
-  currentLocationWeather: null,
-  favorites: [],
+export const useWeatherStore = create<WeatherState>()(
+  persist(
+    (set, get) => ({
+      location: null,
+      weatherData: null,
 
-  setLocation: (city) => set({ location: city }),
+      currentLocationWeather: null,
+      favorites: [],
 
-  setWeatherData: (data) => set({ weatherData: data }),
+      setLocation: (city) => set({ location: city }),
+      setWeatherData: (data) => set({ weatherData: data }),
 
-  setCurrentLocationWeather: (data) => {
-    localStorage.setItem("currentLocationWeather", JSON.stringify(data));
-    set({ currentLocationWeather: data });
-  },
+      setCurrentLocationWeather: (data) =>
+        set({ currentLocationWeather: data }),
 
-  loadCurrentLocationWeather: () => {
-    const stored = localStorage.getItem("currentLocationWeather");
-    if (stored) {
-      set({ currentLocationWeather: JSON.parse(stored) });
+      addFavorite: (city, weatherData) => {
+        const updated = [...get().favorites, { ...city, weatherData }];
+        set({ favorites: updated });
+      },
+
+      removeFavorite: (cityId) => {
+        const updated = get().favorites.filter((c) => c.id !== cityId);
+        set({ favorites: updated });
+      },
+    }),
+    {
+      name: "weather-storage",
+      partialize: (state) => ({
+        favorites: state.favorites,
+        currentLocationWeather: state.currentLocationWeather,
+      }),
     }
-  },
-
-  addFavorite: (city) => {
-    const current = get().favorites;
-    const updated = [...current, city];
-    set({ favorites: updated });
-    localStorage.setItem("favorites", JSON.stringify(updated));
-  },
-
-  removeFavorite: (cityId) => {
-    const updated = get().favorites.filter((c) => c.id !== cityId);
-    set({ favorites: updated });
-    localStorage.setItem("favorites", JSON.stringify(updated));
-  },
-
-  loadFavoritesFromStorage: () => {
-    const stored = localStorage.getItem("favorites");
-    if (stored) {
-      set({ favorites: JSON.parse(stored) });
-    }
-  },
-}));
+  )
+);

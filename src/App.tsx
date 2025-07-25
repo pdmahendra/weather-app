@@ -12,12 +12,6 @@ function App() {
   const setCurrentLocationWeather = useWeatherStore(
     (s) => s.setCurrentLocationWeather
   );
-  const loadCurrentLocationWeather = useWeatherStore(
-    (s) => s.loadCurrentLocationWeather
-  );
-  const loadFavoritesFromStorage = useWeatherStore(
-    (s) => s.loadFavoritesFromStorage
-  );
   const currentLocationWeather = useWeatherStore(
     (s) => s.currentLocationWeather
   );
@@ -29,8 +23,6 @@ function App() {
     };
 
     getCity();
-    loadFavoritesFromStorage();
-    loadCurrentLocationWeather();
   }, []);
 
   const lat = location?.lat ?? 0;

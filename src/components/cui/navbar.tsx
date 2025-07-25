@@ -27,13 +27,6 @@ const Navbar = () => {
   const favorites = useWeatherStore((s) => s.favorites);
   const addFavorite = useWeatherStore((s) => s.addFavorite);
   const removeFavorite = useWeatherStore((s) => s.removeFavorite);
-  const loadFavoritesFromStorage = useWeatherStore(
-    (s) => s.loadFavoritesFromStorage
-  );
-
-  useEffect(() => {
-    loadFavoritesFromStorage();
-  }, [loadFavoritesFromStorage]);
 
   useEffect(() => {
     const timer = setTimeout(async () => {
@@ -68,7 +61,9 @@ const Navbar = () => {
     if (isFavorite) {
       removeFavorite(location.id);
     } else {
-      addFavorite({ ...location, weatherData: weatherData });
+      console.log(location);
+      
+      addFavorite(location, weatherData);
     }
   };
 
